@@ -14,9 +14,15 @@ public class Answer extends CommonProp{
     private String answer4;
     private int curAnswer;
 public Answer(){}
-    public Answer(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id, int questionId) {
+
+    public Answer(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id, int questionId, String answer1, String answer2, String answer3, String answer4, int curAnswer) {
         super(createdBy, modifiedBy, modifiedDate, satus, id);
         this.questionId = questionId;
+        this.answer1 = answer1;
+        this.answer2 = answer2;
+        this.answer3 = answer3;
+        this.answer4 = answer4;
+        this.curAnswer = curAnswer;
     }
 
     public int getQuestionId() {

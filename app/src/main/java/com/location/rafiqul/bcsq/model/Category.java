@@ -17,8 +17,10 @@ public class Category extends CommonProp{
 
     private Date created_date;
 
-    public Category(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id) {
+    public Category(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id,String name,String description) {
         super(createdBy, modifiedBy, modifiedDate, satus,id);
+        this.name=name;
+        this.description=description;
 
     }
 

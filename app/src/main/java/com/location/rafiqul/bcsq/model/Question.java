@@ -13,9 +13,13 @@ public class Question extends CommonProp{
     private String answer;
     private int isMultipleAns;
 
-    public Question(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id, int subCategoryId) {
+    public Question(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id, int subCategoryId, String question, String description, String answer, int isMultipleAns) {
         super(createdBy, modifiedBy, modifiedDate, satus, id);
         this.subCategoryId = subCategoryId;
+        this.question = question;
+        this.description = description;
+        this.answer = answer;
+        this.isMultipleAns = isMultipleAns;
     }
 
     public int getSubCategoryId() {

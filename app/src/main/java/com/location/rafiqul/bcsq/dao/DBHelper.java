@@ -8,6 +8,10 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.location.rafiqul.bcsq.model.Category;
+import com.location.rafiqul.bcsq.model.Subcategory;
+
 public class DBHelper extends SQLiteOpenHelper {
 
    public static final String DATABASE_NAME = "BCS.db";
@@ -54,6 +58,8 @@ public class DBHelper extends SQLiteOpenHelper {
    public static final String ANSWER_COLUMN_ANSWER2 = "answer2";
    public static final String ANSWER_COLUMN_ANSWER3 = "answer3";
    public static final String ANSWER_COLUMN_ANSWER4 = "answer4";
+   public static final String ANSWER_COLUMN_CUR_ANS = "curAnswer";
+
 
    private HashMap hp;
 
@@ -133,7 +139,19 @@ public class DBHelper extends SQLiteOpenHelper {
       db.insert(QUESTION_TABLE_NAME, null, contentValues);
       return true;
    }
-
+   public boolean insertMultipleAnswer(Integer questionid,Integer answerid, String answer1, String answer2,String answer3,String answer4, Integer curAnswer) {
+      SQLiteDatabase db = this.getWritableDatabase();
+      ContentValues contentValues = new ContentValues();
+      contentValues.put(ANSWER_COLUMN_QUESTIONID, questionid);
+      contentValues.put(ANSWER_COLUMN_ANSWERID, answerid);
+      contentValues.put(ANSWER_COLUMN_ANSWER1, answer1);
+      contentValues.put(ANSWER_COLUMN_ANSWER2, answer2);
+      contentValues.put(ANSWER_COLUMN_ANSWER3, answer3);
+      contentValues.put(ANSWER_COLUMN_ANSWER4,answer4);
+      contentValues.put(ANSWER_COLUMN_CUR_ANS,curAnswer);
+      db.insert(ANSWER_TABLE_NAME.trim(), null, contentValues);
+      return true;
+   }
    public boolean insertContact (String name, String phone, String email, String street,String place) {
       SQLiteDatabase db = this.getWritableDatabase();
       ContentValues contentValues = new ContentValues();
@@ -187,6 +205,45 @@ public class DBHelper extends SQLiteOpenHelper {
       
       while(res.isAfterLast() == false){
          array_list.add(res.getString(res.getColumnIndex(CONTACTS_COLUMN_NAME)));
+         res.moveToNext();
+      }
+      return array_list;
+   }
+
+   public ArrayList<Category> getAllCategory() {
+      ArrayList<Category> array_list = new ArrayList<Category>();
+
+      //hp = new HashMap();
+      SQLiteDatabase db = this.getReadableDatabase();
+      Cursor res =  db.rawQuery( "select * from "+CATEGORY_TABLE_NAME+"", null );
+      res.moveToFirst();
+
+      while(res.isAfterLast() == false){
+         Category category=new Category();
+       category.setDescription(res.getString(res.getColumnIndex(CATEGORY_COLUMN_DESCRIPTION)));
+       category.setName(res.getString(res.getColumnIndex(CATEGORY_COLUMN_NAME)));
+       category.setSatus(res.getInt(res.getColumnIndex(CATEGORY_COLUMN_STATUS)));
+       category.setId(res.getInt(res.getColumnIndex(CATEGORY_COLUMN_ID)));
+       array_list.add(category);
+
+         res.moveToNext();
+      }
+      return array_list;
+   }
+
+   public ArrayList getAllSubCategory() {
+      ArrayList<Subcategory> array_list = new ArrayList<Subcategory>();
+
+      //hp = new HashMap();
+      SQLiteDatabase db = this.getReadableDatabase();
+      Cursor res =  db.rawQuery( "select * from "+SUBCATEGORY_TABLE_NAME+"", null );
+      res.moveToFirst();
+
+      while(res.isAfterLast() == false){
+         Subcategory subcategory=new Subcategory();
+
+         array_list.add(subcategory);
+
          res.moveToNext();
       }
       return array_list;
