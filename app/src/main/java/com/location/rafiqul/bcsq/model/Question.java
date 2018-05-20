@@ -12,7 +12,7 @@ public class Question extends CommonProp{
     private String description;
     private String answer;
     private int isMultipleAns;
-
+public Question(){}
     public Question(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id, int subCategoryId, String question, String description, String answer, int isMultipleAns) {
         super(createdBy, modifiedBy, modifiedDate, satus, id);
         this.subCategoryId = subCategoryId;
