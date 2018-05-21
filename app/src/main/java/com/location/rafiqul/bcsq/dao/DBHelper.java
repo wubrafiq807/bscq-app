@@ -104,7 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
       onCreate(db);
    }
 
-   public boolean insertCategory(Integer categoryid, String name, String description, String status) {
+   public boolean insertCategory(Integer categoryid, String name, String description, int status) {
       SQLiteDatabase db = this.getWritableDatabase();
       ContentValues contentValues = new ContentValues();
       contentValues.put(CATEGORY_COLUMN_ID, categoryid);
@@ -116,7 +116,7 @@ public class DBHelper extends SQLiteOpenHelper {
       return true;
    }
 
-   public boolean insertSubCategory(Integer categoryid, Integer subcategoryId, String name, String description, String status) {
+   public boolean insertSubCategory(Integer categoryid, Integer subcategoryId, String name, String description, int status) {
       SQLiteDatabase db = this.getWritableDatabase();
       ContentValues contentValues = new ContentValues();
       contentValues.put(SUBCATEGORY_COLUMN_CATEGORYID, categoryid);
@@ -138,8 +138,13 @@ public class DBHelper extends SQLiteOpenHelper {
       contentValues.put(QUESTION_COLUMN_ANSWER, answer);
       contentValues.put(QUESTION_COLUMN_IS_MULTIPLEANS, isMultiple);
       contentValues.put(QUESTION_COLUMN_STATUS, status);
-      db.insert(QUESTION_TABLE_NAME, null, contentValues);
-      return true;
+    long i=  db.insert(QUESTION_TABLE_NAME, null, contentValues);
+    if((int)i>0){
+       return true;
+    }else{
+       return  false;
+    }
+
    }
 
    public boolean insertMultipleAnswer(Integer questionid, Integer answerid, String answer1, String answer2, String answer3, String answer4, Integer curAnswer) {

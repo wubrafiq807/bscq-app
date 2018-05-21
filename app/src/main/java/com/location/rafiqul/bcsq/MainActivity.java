@@ -16,7 +16,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.location.rafiqul.bcsq.Bean.AnswerBean;
+import com.location.rafiqul.bcsq.Bean.CategoryBean;
 import com.location.rafiqul.bcsq.Bean.QuestionBean;
+import com.location.rafiqul.bcsq.Bean.SubCategoryBean;
 import com.location.rafiqul.bcsq.dao.DBHelper;
 import com.location.rafiqul.bcsq.model.CustomRequest;
 import com.location.rafiqul.bcsq.model.Question;
@@ -38,13 +41,144 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView=findViewById(R.id.showText);
         //updateDBInfo();
-checkdata();
+        //checkdata();
+        updateDBCategory();
     }
 private void checkdata(){
         DBHelper db=new DBHelper(this);
         List<Question> list=db.getAllQuestion();
         String res;
 }
+    private void updateDBAnswer(){
+        final DBHelper dbHelper=new DBHelper(this);
+        //  String url="http://10.44.22.99/bcsqs/api";
+
+
+
+        String url = "http://10.44.22.99/bcsqs/api";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("methodType", "GET");
+        params.put("actionTypp", "getAllAns");
+
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                textView.setText(response.toString());
+                Log.d("Response: ", response.toString());
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<AnswerBean>>(){}.getType();
+                List<AnswerBean> answerBeanList = gson.fromJson(response.toString(), type);
+                for (AnswerBean answerBean:answerBeanList) {
+                    Cursor cursor=dbHelper.getData(DBHelper.ANSWER_TABLE_NAME,DBHelper.ANSWER_COLUMN_ANSWERID,answerBean.id);
+                    if(cursor==null){
+                  dbHelper.insertMultipleAnswer(Integer.parseInt(answerBean.question_id),Integer.parseInt(answerBean.id),
+                          answerBean.answer1,answerBean.answer2,answerBean.answer3,answerBean.answer4,Integer.parseInt(answerBean.cur_answer));
+                    }
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                Log.d("Response: ", response.toString());
+            }
+        });
+        RequestQueue requestQueue=Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsObjRequest);
+
+    }
+    private void updateDBSubCategory(){
+        final DBHelper dbHelper=new DBHelper(this);
+        //  String url="http://10.44.22.99/bcsqs/api";
+
+
+
+        String url = "http://10.44.22.99/bcsqs/api";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("methodType", "GET");
+        params.put("actionTypp", "getAllSubCat");
+
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                textView.setText(response.toString());
+                Log.d("Response: ", response.toString());
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<CategoryBean>>(){}.getType();
+                List<SubCategoryBean> subCategoryBeanList = gson.fromJson(response.toString(), type);
+                for (SubCategoryBean subCategoryBean:subCategoryBeanList) {
+                    Cursor cursor=dbHelper.getData(DBHelper.SUBCATEGORY_TABLE_NAME,DBHelper.QUESTION_COLUMN_SUBCATEGORYID,subCategoryBean.id);
+                    if(cursor==null){
+                        dbHelper.insertSubCategory(Integer.parseInt(subCategoryBean.id),Integer.parseInt(subCategoryBean.category_id),subCategoryBean.name,subCategoryBean.description,Integer.parseInt(subCategoryBean.status));
+                    }
+                    if(cursor!=null &&(Integer.parseInt(subCategoryBean.status)==2)){
+                        dbHelper.delete(DBHelper.SUBCATEGORY_TABLE_NAME,DBHelper.SUBCATEGORY_COLUMN_SUBCATEGORYID,subCategoryBean.id);
+                    }
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                Log.d("Response: ", response.toString());
+            }
+        });
+        RequestQueue requestQueue=Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsObjRequest);
+
+    }
+
+    private void updateDBCategory(){
+        final DBHelper dbHelper=new DBHelper(this);
+        //  String url="http://10.44.22.99/bcsqs/api";
+
+
+
+        String url = "http://10.44.22.99/bcsqs/api";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("methodType", "GET");
+        params.put("actionTypp", "getallcategory");
+
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, url, params, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                textView.setText(response.toString());
+                Log.d("Response: ", response.toString());
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<CategoryBean>>(){}.getType();
+                List<CategoryBean> categoryBeanList = gson.fromJson(response.toString(), type);
+                for (CategoryBean categoryBean:categoryBeanList) {
+                    Cursor cursor=dbHelper.getData(DBHelper.CATEGORY_TABLE_NAME,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
+                    if(cursor==null){
+                        dbHelper.insertCategory(Integer.parseInt(categoryBean.id),categoryBean.name,categoryBean.description,Integer.parseInt(categoryBean.status));
+                    }
+                    if(cursor!=null &&(Integer.parseInt(categoryBean.status)==2)){
+                        dbHelper.delete(DBHelper.CATEGORY_TABLE_NAME,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
+                    }
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                Log.d("Response: ", response.toString());
+            }
+        });
+        RequestQueue requestQueue=Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsObjRequest);
+
+    }
+
     private void updateDBInfo(){
         final DBHelper dbHelper=new DBHelper(this);
       //  String url="http://10.44.22.99/bcsqs/api";
