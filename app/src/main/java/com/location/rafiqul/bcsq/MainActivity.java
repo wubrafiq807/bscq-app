@@ -23,6 +23,7 @@ import com.location.rafiqul.bcsq.Bean.SubCategoryBean;
 import com.location.rafiqul.bcsq.dao.DBHelper;
 import com.location.rafiqul.bcsq.model.CustomRequest;
 import com.location.rafiqul.bcsq.model.Question;
+import com.location.rafiqul.bcsq.util.Constant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,22 +41,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView=findViewById(R.id.showText);
-        //updateDBInfo();
-        //checkdata();
+
         updateDBCategory();
+        updateDBSubCategory();
+        updateDBQuestion();
+        updateDBAnswer();
+
     }
-private void checkdata(){
+      private void checkdata(){
         DBHelper db=new DBHelper(this);
         List<Question> list=db.getAllQuestion();
         String res;
-}
+     }
     private void updateDBAnswer(){
         final DBHelper dbHelper=new DBHelper(this);
         //  String url="http://10.44.22.99/bcsqs/api";
 
 
 
-        String url = "http://10.44.22.99/bcsqs/api";
+        String url = ""+Constant.IP_ADDRESS+"/bcsqs/api";
         Map<String, String> params = new HashMap<String, String>();
         params.put("methodType", "GET");
         params.put("actionTypp", "getAllAns");
@@ -72,8 +76,7 @@ private void checkdata(){
                 for (AnswerBean answerBean:answerBeanList) {
                     Cursor cursor=dbHelper.getData(DBHelper.ANSWER_TABLE_NAME,DBHelper.ANSWER_COLUMN_ANSWERID,answerBean.id);
                     if(cursor==null){
-                  dbHelper.insertMultipleAnswer(Integer.parseInt(answerBean.question_id),Integer.parseInt(answerBean.id),
-                          answerBean.answer1,answerBean.answer2,answerBean.answer3,answerBean.answer4,Integer.parseInt(answerBean.cur_answer));
+
                     }
 
                 }
@@ -97,7 +100,7 @@ private void checkdata(){
 
 
 
-        String url = "http://10.44.22.99/bcsqs/api";
+        String url = ""+Constant.IP_ADDRESS+"/bcsqs/api";
         Map<String, String> params = new HashMap<String, String>();
         params.put("methodType", "GET");
         params.put("actionTypp", "getAllSubCat");
@@ -114,8 +117,8 @@ private void checkdata(){
                 for (SubCategoryBean subCategoryBean:subCategoryBeanList) {
                     Cursor cursor=dbHelper.getData(DBHelper.SUBCATEGORY_TABLE_NAME,DBHelper.QUESTION_COLUMN_SUBCATEGORYID,subCategoryBean.id);
                     if(cursor==null){
-                        dbHelper.insertSubCategory(Integer.parseInt(subCategoryBean.id),Integer.parseInt(subCategoryBean.category_id),subCategoryBean.name,subCategoryBean.description,Integer.parseInt(subCategoryBean.status));
-                    }
+
+                        }
                     if(cursor!=null &&(Integer.parseInt(subCategoryBean.status)==2)){
                         dbHelper.delete(DBHelper.SUBCATEGORY_TABLE_NAME,DBHelper.SUBCATEGORY_COLUMN_SUBCATEGORYID,subCategoryBean.id);
                     }
@@ -141,7 +144,7 @@ private void checkdata(){
 
 
 
-        String url = "http://10.44.22.99/bcsqs/api";
+        String url = ""+ Constant.IP_ADDRESS+"/bcsqs/api";
         Map<String, String> params = new HashMap<String, String>();
         params.put("methodType", "GET");
         params.put("actionTypp", "getallcategory");
@@ -158,8 +161,8 @@ private void checkdata(){
                 for (CategoryBean categoryBean:categoryBeanList) {
                     Cursor cursor=dbHelper.getData(DBHelper.CATEGORY_TABLE_NAME,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
                     if(cursor==null){
-                        dbHelper.insertCategory(Integer.parseInt(categoryBean.id),categoryBean.name,categoryBean.description,Integer.parseInt(categoryBean.status));
-                    }
+
+                          }
                     if(cursor!=null &&(Integer.parseInt(categoryBean.status)==2)){
                         dbHelper.delete(DBHelper.CATEGORY_TABLE_NAME,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
                     }
@@ -179,13 +182,13 @@ private void checkdata(){
 
     }
 
-    private void updateDBInfo(){
+    private void updateDBQuestion(){
         final DBHelper dbHelper=new DBHelper(this);
       //  String url="http://10.44.22.99/bcsqs/api";
 
 
 
-        String url = "http://10.44.22.99/bcsqs/api";
+        String url = ""+Constant.IP_ADDRESS+"/bcsqs/api";
         Map<String, String> params = new HashMap<String, String>();
         params.put("methodType", "GET");
         params.put("actionTypp", "getAllQue");
@@ -202,9 +205,7 @@ private void checkdata(){
                 for (QuestionBean questionBean : contactList){
                     Cursor cursor=dbHelper.getData(DBHelper.QUESTION_TABLE_NAME,DBHelper.QUESTION_COLUMN_QUESTIONID,questionBean.id);
                     if ((cursor == null)){
-                        dbHelper.insertQuestion(Integer.parseInt(questionBean.id),Integer.parseInt(questionBean.sub_category_id),
-                                questionBean.question.toString(),questionBean.description.toString(),questionBean.answer.toString(),
-                                Integer.parseInt(questionBean.is_multiple_ans),Integer.parseInt(questionBean.status));
+
                     }if((cursor != null)&&(Integer.parseInt(questionBean.id)==2)){
                         dbHelper.delete(DBHelper.QUESTION_TABLE_NAME,DBHelper.QUESTION_COLUMN_QUESTIONID,questionBean.id.toString());
                     }
