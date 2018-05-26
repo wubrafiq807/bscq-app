@@ -21,8 +21,11 @@ import com.location.rafiqul.bcsq.Bean.CategoryBean;
 import com.location.rafiqul.bcsq.Bean.QuestionBean;
 import com.location.rafiqul.bcsq.Bean.SubCategoryBean;
 import com.location.rafiqul.bcsq.dao.DBHelper;
+import com.location.rafiqul.bcsq.model.Answer;
+import com.location.rafiqul.bcsq.model.Category;
 import com.location.rafiqul.bcsq.model.CustomRequest;
 import com.location.rafiqul.bcsq.model.Question;
+import com.location.rafiqul.bcsq.model.Subcategory;
 import com.location.rafiqul.bcsq.util.Constant;
 
 import org.json.JSONArray;
@@ -35,16 +38,16 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    TextView textView;
+    TextView textView;DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView=findViewById(R.id.showText);
 
-        updateDBCategory();
-        updateDBSubCategory();
-        updateDBQuestion();
+       updateDBCategory();
+      updateDBSubCategory();
+     updateDBQuestion();
         updateDBAnswer();
 
     }
@@ -54,9 +57,8 @@ public class MainActivity extends AppCompatActivity {
         String res;
      }
     private void updateDBAnswer(){
-        final DBHelper dbHelper=new DBHelper(this);
-        //  String url="http://10.44.22.99/bcsqs/api";
 
+        dbHelper=new DBHelper(getApplicationContext());
 
 
         String url = ""+Constant.IP_ADDRESS+"/bcsqs/api";
@@ -68,17 +70,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONArray response) {
+
                 textView.setText(response.toString());
                 Log.d("Response: ", response.toString());
                 Gson gson = new Gson();
                 Type type = new TypeToken<List<AnswerBean>>(){}.getType();
                 List<AnswerBean> answerBeanList = gson.fromJson(response.toString(), type);
+
+
                 for (AnswerBean answerBean:answerBeanList) {
-                    Cursor cursor=dbHelper.getData(DBHelper.ANSWER_TABLE_NAME,DBHelper.ANSWER_COLUMN_ANSWERID,answerBean.id);
-                    if(cursor==null){
 
+                    Answer answer=dbHelper.getAnswerById(Integer.parseInt(answerBean.id));
+                    if (answer.getId()==null){
+                        Answer answer1=new Answer(Integer.parseInt(answerBean.question_id),answerBean.answer1,answerBean.answer2,answerBean.answer3,answerBean.answer4,Integer.parseInt(answerBean.cur_answer),Integer.parseInt(answerBean.id),0);
+                     long i= dbHelper.createAnswer(answer1);
+                        Log.d("id: ", ""+i+"");
                     }
-
                 }
 
 
@@ -95,10 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void updateDBSubCategory(){
-        final DBHelper dbHelper=new DBHelper(this);
-        //  String url="http://10.44.22.99/bcsqs/api";
-
-
+       dbHelper=new DBHelper(getApplicationContext());
 
         String url = ""+Constant.IP_ADDRESS+"/bcsqs/api";
         Map<String, String> params = new HashMap<String, String>();
@@ -115,12 +119,11 @@ public class MainActivity extends AppCompatActivity {
                 Type type = new TypeToken<List<CategoryBean>>(){}.getType();
                 List<SubCategoryBean> subCategoryBeanList = gson.fromJson(response.toString(), type);
                 for (SubCategoryBean subCategoryBean:subCategoryBeanList) {
-                    Cursor cursor=dbHelper.getData(DBHelper.SUBCATEGORY_TABLE_NAME,DBHelper.QUESTION_COLUMN_SUBCATEGORYID,subCategoryBean.id);
-                    if(cursor==null){
+                    Subcategory subcategory=dbHelper.getSubCategoryById(Integer.parseInt(subCategoryBean.id));
+                    if (subcategory.getId()==null){
+                        Subcategory subcategory1=new Subcategory(Integer.parseInt(subCategoryBean.status),Integer.parseInt(subCategoryBean.id),subCategoryBean.name,subCategoryBean.description,Integer.parseInt(subCategoryBean.category_id));
 
-                        }
-                    if(cursor!=null &&(Integer.parseInt(subCategoryBean.status)==2)){
-                        dbHelper.delete(DBHelper.SUBCATEGORY_TABLE_NAME,DBHelper.SUBCATEGORY_COLUMN_SUBCATEGORYID,subCategoryBean.id);
+                        dbHelper.createSubCategory(subcategory1);
                     }
                 }
 
@@ -139,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDBCategory(){
-        final DBHelper dbHelper=new DBHelper(this);
+ dbHelper=new DBHelper(getApplicationContext());
         //  String url="http://10.44.22.99/bcsqs/api";
 
 
@@ -159,13 +162,11 @@ public class MainActivity extends AppCompatActivity {
                 Type type = new TypeToken<List<CategoryBean>>(){}.getType();
                 List<CategoryBean> categoryBeanList = gson.fromJson(response.toString(), type);
                 for (CategoryBean categoryBean:categoryBeanList) {
-                    Cursor cursor=dbHelper.getData(DBHelper.CATEGORY_TABLE_NAME,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
-                    if(cursor==null){
-
-                          }
-                    if(cursor!=null &&(Integer.parseInt(categoryBean.status)==2)){
-                        dbHelper.delete(DBHelper.CATEGORY_TABLE_NAME,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
-                    }
+                   Category category=dbHelper.getCategoryById(Integer.parseInt(categoryBean.id));
+                   if (category.getId()==null){
+                       Category category1=new Category(categoryBean.name,categoryBean.description,Integer.parseInt(categoryBean.id),Integer.parseInt(categoryBean.status));
+                       dbHelper.createCategory(category1);
+                   }
                 }
 
 
@@ -183,9 +184,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDBQuestion(){
-        final DBHelper dbHelper=new DBHelper(this);
-      //  String url="http://10.44.22.99/bcsqs/api";
-
+       dbHelper=new DBHelper(getApplicationContext());
 
 
         String url = ""+Constant.IP_ADDRESS+"/bcsqs/api";
@@ -203,13 +202,17 @@ public class MainActivity extends AppCompatActivity {
                 Type type = new TypeToken<List<QuestionBean>>(){}.getType();
                 List<QuestionBean> contactList = gson.fromJson(response.toString(), type);
                 for (QuestionBean questionBean : contactList){
-                    Cursor cursor=dbHelper.getData(DBHelper.QUESTION_TABLE_NAME,DBHelper.QUESTION_COLUMN_QUESTIONID,questionBean.id);
-                    if ((cursor == null)){
-
-                    }if((cursor != null)&&(Integer.parseInt(questionBean.id)==2)){
-                        dbHelper.delete(DBHelper.QUESTION_TABLE_NAME,DBHelper.QUESTION_COLUMN_QUESTIONID,questionBean.id.toString());
-                    }
-                    Log.i("Contact Details", questionBean.id + "-" + questionBean.answer + "-" + questionBean.created_date);
+                   Question question=dbHelper.getQuestionById(Integer.parseInt(questionBean.id));
+                   if (question.getId()==null){
+                       question.setSatus(Integer.parseInt(questionBean.status));
+                       question.setIsMultipleAns(Integer.parseInt(questionBean.is_multiple_ans));
+                       question.setSubCategoryId(Integer.parseInt(questionBean.sub_category_id));
+                       question.setQuestion(questionBean.question);
+                       question.setAnswer(questionBean.answer);
+                       question.setDescription(questionBean.description);
+                       question.setId(Integer.parseInt(questionBean.id));
+                       dbHelper.createQuestion(question);
+                   }
                 }
 
             }

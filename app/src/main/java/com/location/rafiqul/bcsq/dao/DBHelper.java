@@ -205,16 +205,16 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("Response: ", selectQuery.toString());
 
         Cursor c = db.rawQuery(selectQuery, null);
-
-        if (c != null)
-            c.moveToFirst();
-
         Category category = new Category();
-        category.setName(c.getString(c.getColumnIndex(CATEGORY_COLUMN_NAME)));
-        category.setDescription(c.getString(c.getColumnIndex(CATEGORY_COLUMN_DESCRIPTION)));
-        category.setId(c.getInt(c.getColumnIndex(CATEGORY_COLUMN_ID)));
-        category.setSatus(c.getInt(c.getColumnIndex(CATEGORY_COLUMN_STATUS)));
+        if(c != null && c.moveToFirst()) {
 
+
+
+            category.setName(c.getString(c.getColumnIndex(CATEGORY_COLUMN_NAME)));
+            category.setDescription(c.getString(c.getColumnIndex(CATEGORY_COLUMN_DESCRIPTION)));
+            category.setId(c.getInt(c.getColumnIndex(CATEGORY_COLUMN_ID)));
+            category.setSatus(c.getInt(c.getColumnIndex(CATEGORY_COLUMN_STATUS)));
+        }
         return category;
     }
 
@@ -250,19 +250,18 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("Response: ", selectQuery.toString());
 
         Cursor c = db.rawQuery(selectQuery, null);
-
-        if (c != null)
-            c.moveToFirst();
-
         Question question = new Question();
-        question.setId(c.getInt(c.getColumnIndex(QUESTION_COLUMN_QUESTIONID)));
-        question.setSubCategoryId(c.getInt(c.getColumnIndex(QUESTION_COLUMN_SUBCATEGORYID)));
-        question.setQuestion(c.getString(c.getColumnIndex(QUESTION_COLUMN_QUESTION)));
-        question.setAnswer(c.getString(c.getColumnIndex(QUESTION_COLUMN_ANSWER)));
-        question.setDescription(c.getString(c.getColumnIndex(QUESTION_COLUMN_DESCRIPTION)));
-        question.setIsMultipleAns(c.getInt(c.getColumnIndex(QUESTION_COLUMN_IS_MULTIPLEANS)));
-        question.setSatus(c.getInt(c.getColumnIndex(QUESTION_COLUMN_STATUS)));
+        if(c != null && c.moveToFirst()) {
 
+            question.setId(c.getInt(c.getColumnIndex(QUESTION_COLUMN_QUESTIONID)));
+            question.setSubCategoryId(c.getInt(c.getColumnIndex(QUESTION_COLUMN_SUBCATEGORYID)));
+            question.setQuestion(c.getString(c.getColumnIndex(QUESTION_COLUMN_QUESTION)));
+            question.setAnswer(c.getString(c.getColumnIndex(QUESTION_COLUMN_ANSWER)));
+            question.setDescription(c.getString(c.getColumnIndex(QUESTION_COLUMN_DESCRIPTION)));
+            question.setIsMultipleAns(c.getInt(c.getColumnIndex(QUESTION_COLUMN_IS_MULTIPLEANS)));
+            question.setSatus(c.getInt(c.getColumnIndex(QUESTION_COLUMN_STATUS)));
+
+        }
         return question;
     }
 
@@ -276,17 +275,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        if (c != null)
-            c.moveToFirst();
-
         Answer answer = new Answer();
-        answer.setQuestionId(c.getInt(c.getColumnIndex(ANSWER_COLUMN_QUESTIONID)));
-        answer.setId(c.getInt(c.getColumnIndex(ANSWER_COLUMN_ANSWERID)));
-        answer.setAnswer1(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER1)));
-        answer.setAnswer2(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER2)));
-        answer.setAnswer3(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER3)));
-        answer.setAnswer4(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER4)));
-        answer.setCurAnswer(c.getInt(c.getColumnIndex(ANSWER_COLUMN_CUR_ANS)));
+        if(c != null && c.moveToFirst()) {
+            answer.setQuestionId(c.getInt(c.getColumnIndex(ANSWER_COLUMN_QUESTIONID)));
+            answer.setId(c.getInt(c.getColumnIndex(ANSWER_COLUMN_ANSWERID)));
+            answer.setAnswer1(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER1)));
+            answer.setAnswer2(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER2)));
+            answer.setAnswer3(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER3)));
+            answer.setAnswer4(c.getString(c.getColumnIndex(ANSWER_COLUMN_ANSWER4)));
+            answer.setCurAnswer(c.getInt(c.getColumnIndex(ANSWER_COLUMN_CUR_ANS)));
+
+        }
+
+
 
         return answer;
     }
@@ -384,6 +385,7 @@ public class DBHelper extends SQLiteOpenHelper {
       //hp = new HashMap();
       SQLiteDatabase db = this.getReadableDatabase();
       Cursor c = db.rawQuery("select * from " + ANSWER_TABLE_NAME + "", null);
+
        if (c.moveToFirst()) {
            do {
                Answer answer = new Answer();
@@ -398,6 +400,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
            } while (c.moveToNext());
        }
+
       return array_list;
    }
 

@@ -7,25 +7,30 @@ import java.util.Date;
  */
 
 public class CommonProp {
-    private int id;
+    private Integer id;
     private int CreatedBy;
     private int modifiedBy;
     private Date modifiedDate;
     private int satus;
 public CommonProp(){}
 
-    public CommonProp(int createdBy, int modifiedBy, Date modifiedDate, int satus,int id) {
+    public CommonProp(Integer id,int status) {
+        this.id = id;
+        this.satus=status;
+    }
+
+    public CommonProp(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id) {
         CreatedBy = createdBy;
         this.modifiedBy = modifiedBy;
         this.modifiedDate = modifiedDate;
         this.satus = satus;
         this.id=id;
     }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public int getCreatedBy() {

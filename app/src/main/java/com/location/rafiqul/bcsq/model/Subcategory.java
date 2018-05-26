@@ -18,6 +18,13 @@ public class Subcategory extends Category{
         return categoryId;
     }
 public Subcategory(){}
+
+    public Subcategory(int satus, Integer id, String name, String description, int categoryId) {
+        super(name,description,id,satus);
+        this.categoryId = categoryId;
+
+    }
+
     public Subcategory(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id, String name, String description, int categoryId) {
         super(createdBy, modifiedBy, modifiedDate, satus, id, name, description);
         this.categoryId = categoryId;
