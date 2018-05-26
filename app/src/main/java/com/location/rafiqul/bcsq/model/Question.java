@@ -6,13 +6,16 @@ import java.util.Date;
  * Created by RAFIQUL on 2018-05-19.
  */
 
-public class Question extends CommonProp{
+public class Question extends CommonProp {
     private int subCategoryId;
     private String question;
     private String description;
     private String answer;
     private int isMultipleAns;
-public Question(){}
+
+    public Question() {
+    }
+
     public Question(int createdBy, int modifiedBy, Date modifiedDate, int satus, int id, int subCategoryId, String question, String description, String answer, int isMultipleAns) {
         super(createdBy, modifiedBy, modifiedDate, satus, id);
         this.subCategoryId = subCategoryId;
