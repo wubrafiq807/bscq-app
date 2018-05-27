@@ -227,17 +227,14 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("Response: ", selectQuery.toString());
 
         Cursor c = db.rawQuery(selectQuery, null);
-
-        if (c != null)
-            c.moveToFirst();
-
         Subcategory subcategory = new Subcategory();
-        subcategory.setCategoryId(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_CATEGORYID)));
-        subcategory.setId(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_SUBCATEGORYID)));
-        subcategory.setDescription(c.getString(c.getColumnIndex(SUBCATEGORY_COLUMN_DESCRIPTION)));
-        subcategory.setName(c.getString(c.getColumnIndex(SUBCATEGORY_COLUMN_NAME)));
-        subcategory.setSatus(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_STATUS)));
-
+        if(c != null && c.moveToFirst()) {
+            subcategory.setCategoryId(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_CATEGORYID)));
+            subcategory.setId(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_SUBCATEGORYID)));
+            subcategory.setDescription(c.getString(c.getColumnIndex(SUBCATEGORY_COLUMN_DESCRIPTION)));
+            subcategory.setName(c.getString(c.getColumnIndex(SUBCATEGORY_COLUMN_NAME)));
+            subcategory.setSatus(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_STATUS)));
+        }
         return subcategory;
     }
 
@@ -333,7 +330,25 @@ public class DBHelper extends SQLiteOpenHelper {
        }
       return array_list;
    }
+    public ArrayList<Subcategory> getAllSubCategoryOneColumn(String columnName,String columnvalue) {
+        ArrayList<Subcategory> array_list = new ArrayList<Subcategory>();
 
+        //hp = new HashMap();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("select * from " + SUBCATEGORY_TABLE_NAME + " where "+columnName+"='"+columnvalue+"'", null);
+        if (c.moveToFirst()) {
+            do {
+                Subcategory subcategory = new Subcategory();
+                subcategory.setCategoryId(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_CATEGORYID)));
+                subcategory.setId(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_SUBCATEGORYID)));
+                subcategory.setDescription(c.getString(c.getColumnIndex(SUBCATEGORY_COLUMN_DESCRIPTION)));
+                subcategory.setName(c.getString(c.getColumnIndex(SUBCATEGORY_COLUMN_NAME)));
+                subcategory.setSatus(c.getInt(c.getColumnIndex(SUBCATEGORY_COLUMN_STATUS)));
+                array_list.add(subcategory);
+            } while (c.moveToNext());
+        }
+        return array_list;
+    }
    public ArrayList<Question> getAllQuestion() {
       ArrayList<Question> array_list = new ArrayList<Question>();
 

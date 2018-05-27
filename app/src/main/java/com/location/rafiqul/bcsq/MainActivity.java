@@ -1,5 +1,6 @@
 package com.location.rafiqul.bcsq;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,11 +47,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.showText);
-
         updateDBCategory();
-        // updateDBSubCategory();
-        //updateDBQuestion();
-        //updateDBAnswer();
+        updateDBSubCategory();
+        updateDBQuestion();
+        updateDBAnswer();
+        Intent intent=new Intent(MainActivity.this,CategoryActivity.class);
+        startActivity(intent);
 
     }
 
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("id: ", "" + i + "");
                     }
                 }
+                answerBeanList.clear();
 
 
             }
@@ -122,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText(response.toString());
                 Log.d("Response: ", response.toString());
                 Gson gson = new Gson();
-                Type type = new TypeToken<List<CategoryBean>>() {
+                Type type = new TypeToken<List<SubCategoryBean>>() {
                 }.getType();
                 List<SubCategoryBean> subCategoryBeanList = gson.fromJson(response.toString(), type);
                 for (SubCategoryBean subCategoryBean : subCategoryBeanList) {
@@ -133,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper.createSubCategory(subcategory1);
                     }
                 }
+                subCategoryBeanList.clear();
 
 
             }
@@ -175,6 +179,8 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper.createCategory(category1);
                     }
                 }
+                categoryBeanList.clear();
+
 
 
             }
@@ -222,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper.createQuestion(question);
                     }
                 }
+                contactList.clear();
+
 
             }
         }, new Response.ErrorListener() {
