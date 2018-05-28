@@ -12,6 +12,7 @@ public class CommonProp {
     private int modifiedBy;
     private Date modifiedDate;
     private int satus;
+    private int updateCount ;
 public CommonProp(){}
 
     public CommonProp(Integer id,int status) {
@@ -65,5 +66,11 @@ public CommonProp(){}
         this.satus = satus;
     }
 
+    public int getUpdateCount() {
+        return updateCount;
+    }
 
+    public void setUpdateCount(int updateCount) {
+        this.updateCount = updateCount;
+    }
 }

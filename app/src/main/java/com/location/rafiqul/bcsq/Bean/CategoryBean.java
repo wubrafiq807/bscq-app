@@ -14,5 +14,6 @@ public class CategoryBean {
     public String modified_date;
     public String modified_by;
     public String status;
+    public String updateCount;
 
 }

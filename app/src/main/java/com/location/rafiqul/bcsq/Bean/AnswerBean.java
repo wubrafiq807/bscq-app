@@ -16,5 +16,6 @@ public class AnswerBean {
     public String created_by;
     public String modified_date;
     public String modified_by;
+    public String updateCount;
 
 }

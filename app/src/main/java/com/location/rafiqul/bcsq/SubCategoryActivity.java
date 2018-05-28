@@ -24,7 +24,7 @@ public class SubCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subcategory);
         dbHelper=new DBHelper(getApplicationContext());
-        List<Subcategory> subcategoryList=dbHelper.getAllSubCategoryOneColumn(DBHelper.SUBCATEGORY_COLUMN_CATEGORYID,getIntent().getStringExtra("categoryID").toString());
+        List<Subcategory> subcategoryList=dbHelper.getAllSubCategoryOneColumn(DBHelper.SUBCATEGORY_COLUMN_CATEGORYID,getIntent().getStringExtra("categoryId").toString());
 
         for (Subcategory subcategory:subcategoryList){
             nameList.add(subcategory.getName());

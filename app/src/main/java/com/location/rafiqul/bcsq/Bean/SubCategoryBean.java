@@ -14,5 +14,5 @@ public class SubCategoryBean {
     public String modified_date;
     public String modified_by;
     public String status;
-
+    public String updateCount;
 }

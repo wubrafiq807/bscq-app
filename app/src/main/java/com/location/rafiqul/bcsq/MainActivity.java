@@ -92,6 +92,16 @@ public class MainActivity extends AppCompatActivity {
                         Answer answer1 = new Answer(Integer.parseInt(answerBean.question_id), answerBean.answer1, answerBean.answer2, answerBean.answer3, answerBean.answer4, Integer.parseInt(answerBean.cur_answer), Integer.parseInt(answerBean.id), 0);
                         long i = dbHelper.createAnswer(answer1);
                         Log.d("id: ", "" + i + "");
+                    }else{
+                        if(Integer.parseInt(answerBean.updateCount)>answer.getUpdateCount()){
+                            answer.setCurAnswer(Integer.parseInt(answerBean.cur_answer));
+                            answer.setUpdateCount(Integer.parseInt(answerBean.updateCount));
+                            answer.setAnswer1(answerBean.answer1);
+                            answer.setAnswer2(answerBean.answer2);
+                            answer.setAnswer3(answerBean.answer3);
+                            answer.setAnswer4(answerBean.answer4);
+                            dbHelper.updateAnswerByColumn(answer,DBHelper.ANSWER_COLUMN_ANSWERID,answerBean.id);
+                        }
                     }
                 }
                 answerBeanList.clear();
@@ -134,6 +144,17 @@ public class MainActivity extends AppCompatActivity {
                         Subcategory subcategory1 = new Subcategory(Integer.parseInt(subCategoryBean.status), Integer.parseInt(subCategoryBean.id), subCategoryBean.name, subCategoryBean.description, Integer.parseInt(subCategoryBean.category_id));
 
                         dbHelper.createSubCategory(subcategory1);
+                    }else{
+                        if (Integer.parseInt(subCategoryBean.status)==2){
+                            dbHelper.deleteAnObjectByColumn(DBHelper.SUBCATEGORY_TABLE_NAME,DBHelper.SUBCATEGORY_COLUMN_SUBCATEGORYID,subCategoryBean.id);
+                        }
+                        if (subcategory.getUpdateCount()<Integer.parseInt(subCategoryBean.updateCount)){
+                            subcategory.setName(subCategoryBean.name);
+                            subcategory.setDescription(subCategoryBean.description);
+                            subcategory.setUpdateCount(Integer.parseInt(subCategoryBean.updateCount));
+                            subcategory.setCategoryId(Integer.parseInt(subCategoryBean.category_id));
+                            dbHelper.updateSubCategoryByColumn(subcategory,DBHelper.SUBCATEGORY_COLUMN_SUBCATEGORYID,subCategoryBean.id);
+                        }
                     }
                 }
                 subCategoryBeanList.clear();
@@ -177,6 +198,17 @@ public class MainActivity extends AppCompatActivity {
                     if (category.getId() == null) {
                         Category category1 = new Category(categoryBean.name, categoryBean.description, Integer.parseInt(categoryBean.id), Integer.parseInt(categoryBean.status));
                         dbHelper.createCategory(category1);
+                    }else{
+                        if (Integer.parseInt(categoryBean.status)==2){
+                            dbHelper.deleteAnObjectByColumn(DBHelper.CATEGORY_TABLE_NAME,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
+                        }
+                        if (category.getUpdateCount()<Integer.parseInt(categoryBean.updateCount)){
+                            category.setUpdateCount(Integer.parseInt(categoryBean.updateCount));
+                            category.setSatus(Integer.parseInt(categoryBean.status));
+                            category.setName(categoryBean.name);
+                            category.setDescription(categoryBean.description);
+                            dbHelper.updateCategoryByColumn(category,DBHelper.CATEGORY_COLUMN_ID,categoryBean.id);
+                        }
                     }
                 }
                 categoryBeanList.clear();
@@ -226,6 +258,21 @@ public class MainActivity extends AppCompatActivity {
                         question.setDescription(questionBean.description);
                         question.setId(Integer.parseInt(questionBean.id));
                         dbHelper.createQuestion(question);
+                    }else{
+                        if(Integer.parseInt(questionBean.status)==2){
+                            dbHelper.deleteAnObjectByColumn(DBHelper.QUESTION_TABLE_NAME,DBHelper.QUESTION_COLUMN_QUESTIONID,questionBean.id);
+                        }if(question.getUpdateCount()<Integer.parseInt(questionBean.updateCount)){
+                            question.setUpdateCount(Integer.parseInt(questionBean.updateCount));
+                            question.setDescription(questionBean.description);
+                            question.setAnswer(questionBean.answer);
+                            question.setQuestion(questionBean.question);
+                            question.setSubCategoryId(Integer.parseInt(questionBean.sub_category_id));
+                            question.setIsMultipleAns(Integer.parseInt(questionBean.is_multiple_ans));
+                            dbHelper.updateQuestionByColumn(question,DBHelper.QUESTION_COLUMN_QUESTIONID,questionBean.id);
+
+
+
+                        }
                     }
                 }
                 contactList.clear();

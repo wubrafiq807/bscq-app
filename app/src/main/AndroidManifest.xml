@@ -19,9 +19,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CategoryActivity"
-            android:label="@string/title_activity_category"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        android:name=".CategoryActivity"
+        android:label="@string/title_activity_category"
+        android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SubCategoryActivity" ></activity>
     </application>
 
 </manifest>

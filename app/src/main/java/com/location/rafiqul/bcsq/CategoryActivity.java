@@ -42,7 +42,7 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent(CategoryActivity.this,SubCategoryActivity.class);
-                intent.putExtra("categoryID",idList.get(position).toString());
+                intent.putExtra("categoryId",idList.get(position).toString());
                 startActivity(intent);
                // Toast.makeText(getApplicationContext(),idList.get(position).toString(),Toast.LENGTH_LONG).show();
             }
