@@ -22,6 +22,7 @@ public class StatusFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
+
         return inflater.inflate(R.layout.fragment_status, container, false);
     }
 

@@ -25,7 +25,9 @@
         <activity
             android:name=".SubCategoryActivity" ></activity>
         <activity
-            android:name=".DetailsActivity" ></activity>
+            android:name=".DetailsActivity"
+            android:theme="@style/AppCompatTheme"
+            ></activity>
     </application>
 
 </manifest>
