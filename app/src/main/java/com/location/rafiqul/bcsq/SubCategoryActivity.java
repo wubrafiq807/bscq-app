@@ -1,5 +1,6 @@
 package com.location.rafiqul.bcsq;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -38,7 +39,8 @@ public class SubCategoryActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),idList.get(position).toString(),Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(SubCategoryActivity.this,DetailsActivity.class);
+                startActivity(intent);
             }
         });
     }

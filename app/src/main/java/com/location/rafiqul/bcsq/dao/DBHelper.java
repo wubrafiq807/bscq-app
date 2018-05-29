@@ -18,7 +18,7 @@ import com.location.rafiqul.bcsq.model.Subcategory;
 
 public class DBHelper extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "BCS.db";
     public static final String CONTACTS_TABLE_NAME = "contacts";
     public static final String CATEGORY_TABLE_NAME = "category";
