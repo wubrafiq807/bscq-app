@@ -15,24 +15,24 @@ import android.widget.Toast;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CallFragment extends Fragment {
+public class MockTestFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_call, container, false);
+        return inflater.inflate(R.layout.fragment_mock_test, container, false);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_calls, menu);
+        inflater.inflate(R.menu.menu_multiple_ans, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_call) {
+        if (item.getItemId() == R.id.action_chat) {
             Toast.makeText(getActivity(), "Clicked on " + item.getTitle(), Toast.LENGTH_SHORT)
                     .show();
         }

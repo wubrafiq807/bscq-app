@@ -3,8 +3,8 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/action_status"
+    android:id="@+id/action_chat"
     android:icon="@drawable/ic_create_white_24dp"
-    android:title="Post status"
+    android:title="Multiple ANS"
     app:showAsAction="ifRoom" />
 </menu>

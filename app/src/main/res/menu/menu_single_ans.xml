@@ -3,8 +3,9 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/action_chat"
-    android:icon="@drawable/ic_chat_white_24dp"
-    android:title="Chat"
+    android:id="@+id/action_call"
+    android:icon="@drawable/ic_create_white_24dp"
+    android:title="Single ANS"
     app:showAsAction="ifRoom" />
+
 </menu>
