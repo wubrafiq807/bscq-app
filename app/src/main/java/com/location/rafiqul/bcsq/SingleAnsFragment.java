@@ -44,8 +44,8 @@ public class SingleAnsFragment extends Fragment {
             }
         }
 
-        adapter= new CustomAdapter(dataModels,getActivity());
-        listView.setAdapter(adapter);
+      //  adapter= new CustomAdapter(dataModels,getActivity());
+        listView.setAdapter(new ListviewContactAdapter(getActivity(), dataModels));
         return view;
     }
 

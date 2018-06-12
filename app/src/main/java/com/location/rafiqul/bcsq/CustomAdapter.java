@@ -48,13 +48,8 @@ public class CustomAdapter extends ArrayAdapter<Question> implements View.OnClic
         Object object= getItem(position);
         Question dataModel=(Question) object;
 
-
-
-
         switch (v.getId())
         {
-
-
 
 
         }
